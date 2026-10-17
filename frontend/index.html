@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safat Financial Agent</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">SAFETY-FIRST FINANCIAL AGENT</p>
+        <h1>Your AI can reason.<br />Your rules stay in control.</h1>
+        <p class="hero-copy">
+          The agent proposes an action, deterministic rules enforce your boundaries,
+          and you decide whether anything happens.
+        </p>
+      </div>
+
+      <div class="principle-card">
+        <span>AI proposes</span>
+        <span class="arrow">→</span>
+        <span>Rules enforce</span>
+        <span class="arrow">→</span>
+        <span>You authorize</span>
+      </div>
+    </header>
+
+    <section class="top-grid">
+      <article class="card">
+        <div class="card-heading">
+          <div>
+            <p class="section-label">DEMO PORTFOLIO</p>
+            <h2>Your portfolio</h2>
+          </div>
+          <span class="demo-badge">Demo data</span>
+        </div>
+
+        <div class="portfolio-value">
+          <span class="currency">$</span>
+          <span id="cash-value">—</span>
+        </div>
+        <p class="muted">Available cash</p>
+
+        <div id="holdings-container" class="holdings"></div>
+      </article>
+
+      <article class="card">
+        <div class="card-heading">
+          <div>
+            <p class="section-label">YOUR BOUNDARIES</p>
+            <h2>Financial rules</h2>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <span>Maximum trade</span>
+            <small>The agent cannot propose more than this amount.</small>
+            <div class="money-input">
+              <span>$</span>
+              <input id="max-trade" type="number" min="0" step="1" value="10" />
+            </div>
+          </label>
+
+          <label>
+            <span>Minimum cash reserve</span>
+            <small>Cash that should remain after a proposed trade.</small>
+            <div class="money-input">
+              <span>$</span>
+              <input id="minimum-cash" type="number" min="0" step="1" value="20" />
+            </div>
+          </label>
+
+          <label class="toggle-row">
+            <div>
+              <span>Require human approval</span>
+              <small>No consequential action happens automatically.</small>
+            </div>
+            <input id="require-approval" type="checkbox" checked />
+          </label>
+        </div>
+
+        <div class="rule-actions">
+          <button id="save-rules-button" class="button button-secondary">Save rules</button>
+          <span id="rules-message" class="inline-message"></span>
+        </div>
+      </article>
+    </section>
+
+    <section class="analysis-card card">
+      <div class="analysis-header">
+        <div>
+          <p class="section-label">AGENT ANALYSIS</p>
+          <h2>Ask the agent to analyze a symbol</h2>
+        </div>
+
+        <div class="symbol-control">
+          <label for="symbol-input">Symbol</label>
+          <input id="symbol-input" type="text" value="XYZ" maxlength="10" autocomplete="off" />
+          <button id="analyze-button" class="button button-primary">Run Analysis</button>
+        </div>
+      </div>
+
+      <div id="activity-panel" class="activity-panel">
+        <div class="activity-dot"></div>
+        <div>
+          <strong id="activity-title">Ready</strong>
+          <p id="activity-text">
+            Run an analysis to see the agent proposal and deterministic safety checks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="result-section" class="results hidden">
+      <div class="result-header">
+        <div>
+          <p class="section-label">RECOMMENDATION</p>
+          <h2>What happened</h2>
+        </div>
+
+        <div class="status-area">
+          <span class="status-label">Status</span>
+          <span id="status-badge" class="status-badge">—</span>
+        </div>
+      </div>
+
+      <div class="proposal-flow">
+        <article class="proposal-card proposal-original">
+          <p class="step-number">1</p>
+          <p class="section-label">AI PROPOSAL</p>
+          <h3>Original proposal</h3>
+          <div id="original-proposal" class="proposal-content"></div>
+        </article>
+
+        <div class="flow-arrow">→</div>
+
+        <article class="proposal-card proposal-rules">
+          <p class="step-number">2</p>
+          <p class="section-label">DETERMINISTIC CHECK</p>
+          <h3>Your rules</h3>
+
+          <div class="rules-column">
+            <div>
+              <h4>Evaluated</h4>
+              <div id="rules-evaluated"></div>
+            </div>
+            <div>
+              <h4>Failed</h4>
+              <div id="rules-failed"></div>
+            </div>
+          </div>
+        </article>
+
+        <div class="flow-arrow">→</div>
+
+        <article class="proposal-card proposal-final">
+          <p class="step-number">3</p>
+          <p class="section-label">SAFE OUTPUT</p>
+          <h3>Final proposal</h3>
+          <div id="final-proposal" class="proposal-content"></div>
+        </article>
+      </div>
+
+      <article class="receipt-card card">
+        <div class="receipt-heading">
+          <div>
+            <p class="section-label">DECISION RECEIPT</p>
+            <h2>Why this recommendation is allowed</h2>
+          </div>
+          <span id="recommendation-id" class="recommendation-id"></span>
+        </div>
+        <div id="decision-receipt" class="receipt-content"></div>
+      </article>
+
+      <article class="approval-card card">
+        <div>
+          <p class="section-label">HUMAN CONTROL</p>
+          <h2>You make the final decision</h2>
+          <p id="approval-message" class="muted">
+            Review the constrained proposal before approving or rejecting it.
+          </p>
+        </div>
+
+        <div class="approval-buttons">
+          <button id="reject-button" class="button button-danger" disabled>Reject</button>
+          <button id="approve-button" class="button button-success" disabled>Approve</button>
+        </div>
+      </article>
+    </section>
+
+    <div id="error-banner" class="error-banner hidden"></div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
